@@ -140,3 +140,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // UI 초기화 함수 호출
     initializeUI();
 });
+
+//end
