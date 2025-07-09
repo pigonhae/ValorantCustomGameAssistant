@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>발로란트 내전 도우미</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container my-4">
+        <h1 class="text-center mb-4">발로란트 내전 도우미</h1>
+
+        <div class="row">
+            <!-- 플레이어 입력 섹션 -->
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header">플레이어 입력</div>
+                    <div class="card-body">
+                        <div id="player-inputs">
+                            <!-- Player input fields will be generated here by JS -->
+                        </div>
+                        <button class="btn btn-secondary btn-sm mt-2" id="auto-fill-players">번호로 자동 채우기</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 맵 선택 섹션 -->
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header">플레이할 맵 선택</div>
+                    <div class="card-body" id="map-selection">
+                        <!-- Map checkboxes will be generated here by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 컨트롤 버튼 -->
+        <div class="text-center my-4">
+            <button class="btn btn-primary btn-lg" id="generate-teams">팀 생성하기!</button>
+        </div>
+
+        <!-- 결과 표시 섹션 -->
+        <div class="card mt-4" id="results-section" style="display: none;">
+            <div class="card-header">팀 결과</div>
+            <div class="card-body">
+                <div id="matchup-display" class="mb-4">
+                    <!-- Matchups will be displayed here -->
+                </div>
+
+                <h4 id="map-name-label" class="text-center mt-4"></h4>
+                <div class="text-center">
+                    <img id="map-image-display" class="img-fluid" style="max-height: 250px;" alt="선택된 맵 이미지">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

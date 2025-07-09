@@ -1,0 +1,22 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card-header {
+    font-weight: bold;
+    background-color: #e9ecef;
+}
+
+#matchup-display .col {
+    text-align: center;
+}
+
+#matchup-display .player-name {
+    font-weight: bold;
+    color: #000000; /* Explicitly set to black */
+}
+
+#matchup-display .vs-text {
+    color: #6c757d;
+    font-style: italic;
+}
