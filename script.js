@@ -113,6 +113,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        // '하성' 또는 '피곤해' 이름 자동 완성 기능
+        playerInputFields.forEach(player => {
+            player.nameInput.addEventListener('input', () => {
+                const name = player.nameInput.value.trim();
+                if (name === '하성' || name === '피곤해') {
+                    player.tierSelect.value = '실버 1';
+                    const positionsToSelect = ['타격대', '감시자', '전략가'];
+                    player.positionCheckboxes.forEach(checkbox => {
+                        checkbox.checked = positionsToSelect.includes(checkbox.value);
+                    });
+                }
+            });
+        });
+
         // 맵 이미지 생성
         const mapFragment = document.createDocumentFragment();
         maps.forEach(mapName => {
