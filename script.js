@@ -317,8 +317,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 결과 표시
         finalBestCombinations.forEach((combination, index) => {
-            const teamA = combination.teamA;
-            const teamB = combination.teamB;
+            const teamA = combination.teamA.sort((a, b) => b.score - a.score);
+            const teamB = combination.teamB.sort((a, b) => b.score - a.score);
             const scoreA = teamA.reduce((sum, p) => sum + p.score, 0);
             const scoreB = teamB.reduce((sum, p) => sum + p.score, 0);
 
