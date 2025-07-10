@@ -187,9 +187,14 @@ h1 {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.map-image-container.selected-map {
-    border-color: #28a745;
-    box-shadow: 0 0 15px rgba(40, 167, 69, 0.6);
+.map-image-container.selected {
+    border: 3px solid #28a745;
+    box-shadow: 0 0 15px #28a745;
+}
+
+.grayscale {
+    filter: grayscale(100%);
+    opacity: 0.6;
 }
 
 .map-image-container .map-thumbnail {
@@ -214,7 +219,7 @@ h1 {
 }
 
 .map-image-container:hover .map-name-overlay,
-.map-image-container.selected-map .map-name-overlay {
+.map-image-container.selected .map-name-overlay {
     opacity: 1; 
 }
 
@@ -400,4 +405,11 @@ h1 {
     width: 35px;
     height: 35px;
     vertical-align: middle;
+}
+
+.site-footer {
+    background-color: #ffffff;
+    padding: 20px 0;
+    margin-top: 40px;
+    border-top: 1px solid #e9ecef;
 }

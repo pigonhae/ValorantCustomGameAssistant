@@ -52,6 +52,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const POSITIONS = ["타격대", "척후대", "감시자", "전략가"];
 
+    // --- 맵 선택 UI 업데이트 ---
+    function updateMapGrayscale() {
+        const allMapDivs = mapSelectionDiv.querySelectorAll('.map-image-container');
+        allMapDivs.forEach(div => {
+            if (div.classList.contains('selected')) {
+                div.classList.remove('grayscale');
+            } else {
+                div.classList.add('grayscale');
+            }
+        });
+    }
+
     // --- UI 초기화 ---
     function initializeUI() {
         // 플레이어 입력 필드 생성
@@ -105,14 +117,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const mapFragment = document.createDocumentFragment();
         maps.forEach(mapName => {
             const mapDiv = document.createElement('div');
-            mapDiv.className = 'map-image-container selected-map'; // Default to selected
+            mapDiv.className = 'map-image-container selected'; // Default to selected
             mapDiv.dataset.mapName = mapName; // Store map name in data attribute
             mapDiv.innerHTML = `
                 <img src="images/${mapName}.png" alt="${mapName}" class="img-fluid map-thumbnail">
                 <div class="map-name-overlay">${mapName}</div>
             `;
             mapDiv.addEventListener('click', () => {
-                mapDiv.classList.toggle('selected-map');
+                mapDiv.classList.toggle('selected');
+                updateMapGrayscale();
             });
             mapFragment.appendChild(mapDiv);
         });
@@ -130,6 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
         });
+
+        updateMapGrayscale(); // 초기 맵 상태 업데이트
     }
 
     // --- 이벤트 리스너 ---
@@ -199,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const selectedMaps = Array.from(document.querySelectorAll('.map-image-container.selected-map')).map(div => div.dataset.mapName);
+        const selectedMaps = Array.from(document.querySelectorAll('.map-image-container.selected')).map(div => div.dataset.mapName);
         if (selectedMaps.length === 0) {
             alert('플레이할 맵이 하나 이상 있어야 합니다.');
             return;
@@ -306,7 +321,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                 const tierColorClass = TIER_COLORS[baseTier] || 'badge-secondary';
                                 return `<li class="list-group-item d-flex justify-content-between align-items-center">
                                 ${p.name} <span class="badge ${tierColorClass}">${p.tier} (${p.score})</span>
-                                <small class="text-muted">${p.positions.join(', ')}</small>
                             </li>`;
                             }).join('')}
                         </ul>
@@ -319,7 +333,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                 const tierColorClass = TIER_COLORS[baseTier] || 'badge-secondary';
                                 return `<li class="list-group-item d-flex justify-content-between align-items-center">
                                 ${p.name} <span class="badge ${tierColorClass}">${p.tier} (${p.score})</span>
-                                <small class="text-muted">${p.positions.join(', ')}</small>
                             </li>`;
                             }).join('')}
                     </div>
