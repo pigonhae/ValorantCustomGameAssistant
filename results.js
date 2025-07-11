@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h4 class="text-center mb-3">조합 ${index + 1}</h4>
                 <div class="row">
                     <div class="col-md-6">
-                        <h5 class="text-center text-primary">공격팀 (총점: ${scoreA})</h5>
+                        <h5 class="text-center text-primary">공격팀 (${scoreA})</h5>
                         <ul class="list-group">
                             ${teamA.map(p => {
                                 const baseTier = p.tier.split(' ')[0];
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </ul>
                     </div>
                     <div class="col-md-6">
-                        <h5 class="text-center text-danger">수비팀 (총점: ${scoreB})</h5>
+                        <h5 class="text-center text-danger">수비팀 (${scoreB})</h5>
                         <ul class="list-group">
                             ${teamB.map(p => {
                                 const baseTier = p.tier.split(' ')[0];
