@@ -82,8 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                 const tierColorClass = TIER_COLORS[baseTier] || 'badge-secondary';
                                 const abbreviatedTier = getTierAbbreviation(p.tier);
                                 const positionLogos = p.positions.map(pos => 
-                                    `<span class="position-logo-wrapper">
-                                        <img src="images/class/${pos}.png" alt="${pos}" title="${pos}" class="position-logo">
+                                    `<span class="position-logo-wrapper" title="${pos}">
+                                        <img src="images/class/${pos}.png" alt="${pos}" class="position-logo">
                                     </span>`
                                 ).join('');
                                 return `<li class="list-group-item ${tierColorClass}">
@@ -104,8 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                 const tierColorClass = TIER_COLORS[baseTier] || 'badge-secondary';
                                 const abbreviatedTier = getTierAbbreviation(p.tier);
                                 const positionLogos = p.positions.map(pos => 
-                                    `<span class="position-logo-wrapper">
-                                        <img src="images/class/${pos}.png" alt="${pos}" title="${pos}" class="position-logo">
+                                    `<span class="position-logo-wrapper" title="${pos}">
+                                        <img src="images/class/${pos}.png" alt="${pos}" class="position-logo">
                                     </span>`
                                 ).join('');
                                 return `<li class="list-group-item ${tierColorClass}">
