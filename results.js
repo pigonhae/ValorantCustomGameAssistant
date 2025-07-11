@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
             case '다이아몬드': abbrev = 'D'; break;
             case '초월자': abbrev = 'A'; break;
             case '불멸': abbrev = 'IM'; break;
-            case '레디���트': return 'R';
+            case '레디언트': return 'R';
             default: return '';
         }
         return abbrev + tierNum;
