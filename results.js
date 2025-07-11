@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         // 팀 조합 결과 표시
-        finalBestCombinations.forEach((combination, index) => {
+        finalBestCombinations.slice(0, 3).forEach((combination, index) => {
             const teamA = combination.teamA.sort((a, b) => b.score - a.score);
             const teamB = combination.teamB.sort((a, b) => b.score - a.score);
             const scoreA = teamA.reduce((sum, p) => sum + p.score, 0);
