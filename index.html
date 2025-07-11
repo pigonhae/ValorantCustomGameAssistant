@@ -11,28 +11,22 @@
     <div class="container my-4">
         <h1 class="text-center mb-4">발로란트 내전 도우미</h1>
 
-        <div class="row">
-            <!-- 플레이어 입력 섹션 -->
-            <div>
-                <div class="card mb-3">
-                    <div class="card-header">플레이어 입력</div>
-                    <div class="card-body">
-                        <div id="player-inputs">
-                            <!-- Player input fields will be generated here by JS -->
-                        </div>
-                        <button class="btn btn-secondary btn-sm mt-2" id="auto-fill-players">자동 채우기</button>
-                    </div>
+        <!-- 플레이어 입력 섹션 -->
+        <div class="card mb-4">
+            <div class="card-header">플레이어 입력</div>
+            <div class="card-body">
+                <div id="player-inputs">
+                    <!-- Player input fields will be generated here by JS -->
                 </div>
+                <button class="btn btn-secondary btn-sm mt-2" id="auto-fill-players">자동 채우기</button>
             </div>
+        </div>
 
-            <!-- 맵 선택 섹션 -->
-            <div>
-                <div class="card mb-3">
-                    <div class="card-header">플레이할 맵 선택</div>
-                    <div class="card-body map-selection-images" id="map-selection">
-                        <!-- Map images will be generated here by JS -->
-                    </div>
-                </div>
+        <!-- 맵 선택 섹션 -->
+        <div class="card mb-3">
+            <div class="card-header">플레이할 맵 선택</div>
+            <div class="card-body map-selection-images" id="map-selection">
+                <!-- Map images will be generated here by JS -->
             </div>
         </div>
 
@@ -41,20 +35,7 @@
             <button class="btn btn-primary btn-lg" id="generate-teams">팀 생성하기!</button>
         </div>
 
-        <!-- 결과 표시 섹션 -->
-        <div class="card mt-4" id="results-section" style="display: none;">
-            <div class="card-header">팀 결과</div>
-            <div class="card-body">
-                <div id="matchup-display" class="mb-4">
-                    <!-- Matchups will be displayed here -->
-                </div>
-
-                <h4 id="map-name-label" class="text-center mt-4"></h4>
-                <div class="text-center">
-                    <img id="map-image-display" class="img-fluid" style="max-height: 250px;" alt="선택된 맵 이미지">
-                </div>
-            </div>
-        </div>
+        
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

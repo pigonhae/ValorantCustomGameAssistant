@@ -3,13 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const mapSelectionDiv = document.getElementById('map-selection');
     const autoFillPlayersBtn = document.getElementById('auto-fill-players');
     const generateTeamsBtn = document.getElementById('generate-teams');
-    const resultsSection = document.getElementById('results-section');
-    const matchupDisplay = document.getElementById('matchup-display');
-    const mapNameLabel = document.getElementById('map-name-label');
-    const mapImageDisplay = document.getElementById('map-image-display');
 
     const maps = ["스플릿", "바인드", "헤이븐", "어센트", "아이스박스", "브리즈", "프랙처", "펄", "로터스", "선셋", "어비스", "코로드"];
-    const playerInputFields = []; // This will now store objects with name, tier, and positions
+    const playerInputFields = [];
 
     const TIERS = {
         "아이언 1": 100,
@@ -39,18 +35,56 @@ document.addEventListener('DOMContentLoaded', () => {
         "레디언트": 1000
     };
 
-    const TIER_COLORS = {
-        "아이언": "badge-iron",
-        "브론즈": "badge-bronze",
-        "실버": "badge-silver",
-        "골드": "badge-gold",
-        "플래티넘": "badge-platinum",
-        "다이아몬드": "badge-diamond",
-        "초월자": "badge-ascendant",        "불멸": "badge-immortal",
-        "레디언트": "badge-radiant"
-    };
-
     const POSITIONS = ["타격대", "척후대", "감시자", "전략가"];
+
+    // --- 데이터 저장 및 복원 --- 
+    function saveInputs() {
+        const inputs = {
+            players: [],
+            selectedMaps: []
+        };
+
+        playerInputFields.forEach(playerGroup => {
+            const name = playerGroup.nameInput.value.trim();
+            const tier = playerGroup.tierSelect.value;
+            const positions = playerGroup.positionCheckboxes
+                                .filter(cb => cb.checked)
+                                .map(cb => cb.value);
+            inputs.players.push({ name, tier, positions });
+        });
+
+        inputs.selectedMaps = Array.from(document.querySelectorAll('.map-image-container.selected')).map(div => div.dataset.mapName);
+
+        sessionStorage.setItem('valorantTeamInputs', JSON.stringify(inputs));
+    }
+
+    function loadInputs() {
+        const savedInputs = JSON.parse(sessionStorage.getItem('valorantTeamInputs'));
+        if (!savedInputs) return;
+
+        // 플레이어 정보 복원
+        savedInputs.players.forEach((playerData, index) => {
+            if (playerInputFields[index]) {
+                const playerGroup = playerInputFields[index];
+                playerGroup.nameInput.value = playerData.name || '';
+                playerGroup.tierSelect.value = playerData.tier || Object.keys(TIERS)[0];
+                playerGroup.positionCheckboxes.forEach(cb => {
+                    cb.checked = playerData.positions.includes(cb.value);
+                });
+            }
+        });
+
+        // 맵 선택 정보 복원
+        const allMapDivs = mapSelectionDiv.querySelectorAll('.map-image-container');
+        allMapDivs.forEach(div => {
+            if (savedInputs.selectedMaps.includes(div.dataset.mapName)) {
+                div.classList.add('selected');
+            } else {
+                div.classList.remove('selected');
+            }
+        });
+        updateMapGrayscale();
+    }
 
     // --- 맵 선택 UI 업데이트 ---
     function updateMapGrayscale() {
@@ -66,11 +100,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- UI 초기화 ---
     function initializeUI() {
-        // 플레이어 입력 필드 생성
         const playerFragment = document.createDocumentFragment();
-        for (let i = 0; i < 10; i++) { // 10 players total
+        for (let i = 0; i < 10; i++) {
             const playerDiv = document.createElement('div');
-            playerDiv.className = 'player-input-group mb-3 p-2 border rounded'; // Added styling classes
+            playerDiv.className = 'player-input-group mb-3 p-2 border rounded';
             playerDiv.innerHTML = `
                 <div class="d-flex align-items-center mb-2">
                     <input type="text" class="form-control player-name-input" placeholder="플레이어 ${i + 1}">
@@ -92,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <label class="form-check-label" for="player-${i}-pos-${pos}">${pos}</label>
                             </div>
                         `).join('')}
-                        <div class="form-check me-2 mb-1"> <!-- Moved and class changed -->
+                        <div class="form-check me-2 mb-1">
                             <input class="form-check-input select-all-positions" type="checkbox" id="player-${i}-select-all">
                             <label class="form-check-label" for="player-${i}-select-all">모두 체크</label>
                         </div>
@@ -103,7 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         playerInputsDiv.appendChild(playerFragment);
 
-        // playerInputFields 배열 채우기 (각 플레이어 그룹의 요소들을 참조)
         for (let i = 0; i < 10; i++) {
             const playerGroup = playerInputsDiv.children[i];
             playerInputFields.push({
@@ -113,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // '하성' 또는 '피곤해' 이름 자동 완성 기능
         playerInputFields.forEach(player => {
             player.nameInput.addEventListener('input', () => {
                 const name = player.nameInput.value.trim();
@@ -127,14 +158,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // 맵 이미지 생성
         const mapFragment = document.createDocumentFragment();
         maps.forEach(mapName => {
             const mapDiv = document.createElement('div');
-            mapDiv.className = 'map-image-container selected'; // Default to selected
-            mapDiv.dataset.mapName = mapName; // Store map name in data attribute
+            mapDiv.className = 'map-image-container selected';
+            mapDiv.dataset.mapName = mapName;
             mapDiv.innerHTML = `
-                <img src="images/${mapName}.png" alt="${mapName}" class="img-fluid map-thumbnail">
+                <img src="images/map/${mapName}.png" alt="${mapName}" class="img-fluid map-thumbnail">
                 <div class="map-name-overlay">${mapName}</div>
             `;
             mapDiv.addEventListener('click', () => {
@@ -145,20 +175,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         mapSelectionDiv.appendChild(mapFragment);
 
-        // 포지션 체크박스 선택 제한 로직
-        playerInputFields.forEach((player, playerIndex) => {
+        playerInputFields.forEach((player) => {
             player.positionCheckboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', () => {
                     const checkedCount = player.positionCheckboxes.filter(cb => cb.checked).length;
                     if (checkedCount > 4) {
                         alert('포지션은 최대 4개까지 선택할 수 있습니다.');
-                        checkbox.checked = false; // Uncheck the last selected one
+                        checkbox.checked = false;
                     }
                 });
             });
         });
 
-        updateMapGrayscale(); // 초기 맵 상태 업데이트
+        updateMapGrayscale();
+        loadInputs(); // 페이지 로드 시 저장된 데이터 복원
     }
 
     // --- 이벤트 리스너 ---
@@ -166,26 +196,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const tierKeys = Object.keys(TIERS);
         playerInputFields.forEach((player, index) => {
             player.nameInput.value = `플레이어 ${index + 1}`;
-
-            // Random Tier
             const randomTierIndex = Math.floor(Math.random() * tierKeys.length);
             player.tierSelect.value = tierKeys[randomTierIndex];
-
-            // Random Positions (1 to 4 selected)
-            player.positionCheckboxes.forEach(cb => cb.checked = false); // Uncheck all first
-            const numPositionsToSelect = Math.floor(Math.random() * 4) + 1; // 1 to 4 positions
+            player.positionCheckboxes.forEach(cb => cb.checked = false);
+            const numPositionsToSelect = Math.floor(Math.random() * 4) + 1;
             const shuffledPositions = [...POSITIONS].sort(() => Math.random() - 0.5);
             for (let i = 0; i < numPositionsToSelect; i++) {
                 const posValue = shuffledPositions[i];
                 const checkbox = player.positionCheckboxes.find(cb => cb.value === posValue);
-                if (checkbox) {
-                    checkbox.checked = true;
-                }
+                if (checkbox) checkbox.checked = true;
             }
         });
     });
 
-    // "모두 체크" 체크박스 이벤트 리스너
     playerInputsDiv.addEventListener('change', (event) => {
         if (event.target.classList.contains('select-all-positions')) {
             const playerGroup = event.target.closest('.player-input-group');
@@ -195,10 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     generateTeamsBtn.addEventListener('click', () => {
-        resultsSection.style.display = 'none'; // 이전 결과 숨기기
-        matchupDisplay.innerHTML = ''; // 이전 매치업 초기화
-        mapImageDisplay.src = ''; // 이전 맵 이미지 초기화
-        mapNameLabel.textContent = ''; // 이전 맵 이름 초기화
+        saveInputs(); // 결과 생성 전 현재 입력 상태 저장
 
         const players = [];
         let allPlayersValid = true;
@@ -206,9 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const name = playerGroup.nameInput.value.trim();
             const tier = playerGroup.tierSelect.value;
             const score = TIERS[tier];
-            const positions = playerGroup.positionCheckboxes
-                                .filter(cb => cb.checked)
-                                .map(cb => cb.value);
+            const positions = playerGroup.positionCheckboxes.filter(cb => cb.checked).map(cb => cb.value);
 
             if (name === '') {
                 alert(`플레이어 ${index + 1}의 이름을 입력해주세요.`);
@@ -220,13 +238,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 allPlayersValid = false;
                 return;
             }
-
             players.push({ name, tier, score, positions });
         });
 
-        if (!allPlayersValid || players.length !== 10) {
-            return;
-        }
+        if (!allPlayersValid || players.length !== 10) return;
 
         const selectedMaps = Array.from(document.querySelectorAll('.map-image-container.selected')).map(div => div.dataset.mapName);
         if (selectedMaps.length === 0) {
@@ -234,132 +249,65 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // --- 팀 밸런싱 로직 시작 ---
-        const numCombinationsToGenerate = 3; // 최종적으로 생성할 조합의 수
-        const candidatePoolSize = 500; // 생성할 후보 조합의 수 (이 값을 늘리면 더 다양한 조합을 찾을 수 있지만, 계산 시간이 길어질 수 있습니다.)
-        const shufflesPerCandidate = 2000; // 각 후보 조합을 찾기 위한 셔플 횟수 (이 값을 늘리면 각 후보 조합의 밸런스가 더 좋아질 수 있습니다.)
-
-        const candidateCombinations = [];
-
-        for (let k = 0; k < candidatePoolSize; k++) {
-            let bestTeamA = [];
-            let bestTeamB = [];
+        // --- 팀 밸런싱 로직 ---
+        function findBestCombination(players, excludedCombinations) {
+            const shuffles = 20000;
+            let bestCombo = null;
             let minScoreDiff = Infinity;
             let bestPositionBalanceScore = Infinity;
 
-            for (let i = 0; i < shufflesPerCandidate; i++) {
+            for (let i = 0; i < shuffles; i++) {
                 const shuffledPlayers = [...players].sort(() => Math.random() - 0.5);
-                const currentTeamA = shuffledPlayers.slice(0, 5);
-                const currentTeamB = shuffledPlayers.slice(5, 10);
+                const teamA = shuffledPlayers.slice(0, 5);
+                const teamB = shuffledPlayers.slice(5, 10);
+                const teamA_names = teamA.map(p => p.name).sort().join(',');
+                const teamB_names = teamB.map(p => p.name).sort().join(',');
+                const canonicalCombo = [teamA_names, teamB_names].sort().join('|');
 
-                const scoreA = currentTeamA.reduce((sum, p) => sum + p.score, 0);
-                const scoreB = currentTeamB.reduce((sum, p) => sum + p.score, 0);
+                if (excludedCombinations.has(canonicalCombo)) continue;
+
+                const scoreA = teamA.reduce((sum, p) => sum + p.score, 0);
+                const scoreB = teamB.reduce((sum, p) => sum + p.score, 0);
                 const scoreDiff = Math.abs(scoreA - scoreB);
+                const positionBalanceScore = calculatePositionBalance(teamA, teamB);
 
-                const positionBalanceScore = calculatePositionBalance(currentTeamA, currentTeamB);
-
-                // 점수 차이를 우선하고, 점수 차이가 같으면 포지션 밸런스를 우선
                 if (scoreDiff < minScoreDiff || (scoreDiff === minScoreDiff && positionBalanceScore < bestPositionBalanceScore)) {
                     minScoreDiff = scoreDiff;
-                    bestTeamA = currentTeamA;
-                    bestTeamB = currentTeamB;
                     bestPositionBalanceScore = positionBalanceScore;
+                    bestCombo = { teamA, teamB, scoreDiff, positionBalanceScore };
                 }
             }
-            candidateCombinations.push({ teamA: bestTeamA, teamB: bestTeamB, scoreDiff: minScoreDiff, positionBalanceScore: bestPositionBalanceScore });
+            return bestCombo;
         }
 
-        // 후보 조합들을 점수 차이, 그 다음 포지션 밸런스 점수 기준으로 정렬
-        candidateCombinations.sort((a, b) => {
-            if (a.scoreDiff !== b.scoreDiff) {
-                return a.scoreDiff - b.scoreDiff;
-            }
-            return a.positionBalanceScore - b.positionBalanceScore;
-        });
-
+        const numCombinationsToGenerate = 6; // 생성할 조합의 수
         const finalBestCombinations = [];
-        const seenCombinations = new Set(); // 고유 조합을 저장하기 위한 Set
-
-        for (const combo of candidateCombinations) {
-            if (finalBestCombinations.length >= numCombinationsToGenerate) {
-                break; // 필요한 수의 고유 조합을 찾았으면 중단
-            }
-
-            // 조합의 정규화된 문자열 표현 생성 (팀 순서에 상관없이 동일하게)
-            const teamA_names = combo.teamA.map(p => p.name).sort().join(',');
-            const teamB_names = combo.teamB.map(p => p.name).sort().join(',');
-            const canonicalCombo = [teamA_names, teamB_names].sort().join('|');
-
-            if (!seenCombinations.has(canonicalCombo)) {
-                finalBestCombinations.push(combo);
+        const seenCombinations = new Set();
+        for (let i = 0; i < numCombinationsToGenerate; i++) {
+            const bestCombo = findBestCombination(players, seenCombinations);
+            if (bestCombo) {
+                finalBestCombinations.push(bestCombo);
+                const teamA_names = bestCombo.teamA.map(p => p.name).sort().join(',');
+                const teamB_names = bestCombo.teamB.map(p => p.name).sort().join(',');
+                const canonicalCombo = [teamA_names, teamB_names].sort().join('|');
                 seenCombinations.add(canonicalCombo);
+            } else {
+                break;
             }
         }
 
-        // 결과 표시를 위해 bestCombinations 대신 finalBestCombinations 사용
-        // (이 부분은 아래 결과 표시 로직에서 변수명만 변경하면 됨)
-
-        // --- 팀 밸런싱 로직 끝 ---
-
-        // 맵 랜덤 선정 및 이미지 표시
+        // --- 결과 저장 및 페이지 이동 ---
         const selectedMap = selectedMaps[Math.floor(Math.random() * selectedMaps.length)];
-        mapNameLabel.textContent = `🗺️ 이번 매치 맵: ${selectedMap}`;
-
-        const imagePath = `images/${selectedMap}.png`;
-        mapImageDisplay.src = imagePath;
-        mapImageDisplay.alt = `${selectedMap} 맵 이미지`;
-
-        mapImageDisplay.onerror = () => {
-            console.error(`Failed to load image: ${imagePath}`);
-            mapImageDisplay.src = '';
-            mapImageDisplay.alt = '이미지를 불러올 수 없습니다.';
+        
+        const resultsData = {
+            finalBestCombinations,
+            selectedMap
         };
 
-        // 결과 표시
-        finalBestCombinations.forEach((combination, index) => {
-            const teamA = combination.teamA.sort((a, b) => b.score - a.score);
-            const teamB = combination.teamB.sort((a, b) => b.score - a.score);
-            const scoreA = teamA.reduce((sum, p) => sum + p.score, 0);
-            const scoreB = teamB.reduce((sum, p) => sum + p.score, 0);
-
-            const combinationDiv = document.createElement('div');
-            combinationDiv.className = 'team-combination-result mb-4 p-3 border rounded';
-            combinationDiv.innerHTML = `
-                <h4 class="text-center mb-3">조합 ${index + 1}</h4>
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5 class="text-center text-primary">공격팀 (총점: ${scoreA})</h5>
-                        <ul class="list-group">
-                            ${teamA.map(p => {
-                                const baseTier = p.tier.split(' ')[0]; // e.g., "아이언 1" -> "아이언"
-                                const tierColorClass = TIER_COLORS[baseTier] || 'badge-secondary';
-                                return `<li class="list-group-item d-flex justify-content-between align-items-center">
-                                ${p.name} <span class="badge ${tierColorClass}">${p.tier} (${p.score})</span>
-                            </li>`;
-                            }).join('')}
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <h5 class="text-center text-danger">수비팀 (총점: ${scoreB})</h5>
-                        <ul class="list-group">
-                            ${teamB.map(p => {
-                                const baseTier = p.tier.split(' ')[0];
-                                const tierColorClass = TIER_COLORS[baseTier] || 'badge-secondary';
-                                return `<li class="list-group-item d-flex justify-content-between align-items-center">
-                                ${p.name} <span class="badge ${tierColorClass}">${p.tier} (${p.score})</span>
-                            </li>`;
-                            }).join('')}
-                    </div>
-                </div>
-                <p class="text-center mt-3 mb-0">점수 차이: ${Math.abs(scoreA - scoreB)}</p>
-            `;
-            matchupDisplay.appendChild(combinationDiv);
-        });
-
-        resultsSection.style.display = 'block'; // 결과 섹션 표시
+        sessionStorage.setItem('valorantTeamResults', JSON.stringify(resultsData));
+        window.location.href = 'results.html'; // 결과 페이지로 이동
     });
 
-    // 포지션 밸런스 계산 함수 (간단한 예시)
     function calculatePositionBalance(teamA, teamB) {
         const teamAPosCounts = {};
         const teamBPosCounts = {};
@@ -386,6 +334,5 @@ document.addEventListener('DOMContentLoaded', () => {
         return balanceScore;
     }
 
-    // UI 초기화 함수 호출
     initializeUI();
 });

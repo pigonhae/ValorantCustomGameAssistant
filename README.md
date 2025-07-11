@@ -32,7 +32,6 @@ ValorantCustomGameAssistant/
 ├───index.html          # 메인 웹 페이지
 ├───script.js           # 핵심 로직 (플레이어 관리, 팀 밸런싱, UI 상호작용)
 ├───style.css           # 웹 페이지 스타일
-├───.git/               # Git 저장소 관련 파일
 └───images/             # 맵 이미지 및 기타 이미지
     ├───로터스.png
     ├───바인드.png

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>팀 생성 결과 - 발로란트 내전 도우미</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container my-4">
+        <h1 class="text-center mb-4">팀 생성 결과</h1>
+
+        <!-- 결과 표시 섹션 -->
+        <div class="card mt-4" id="results-section">
+            <div class="card-header">팀 결과</div>
+            <div class="card-body">
+                <div id="matchup-display" class="mb-4">
+                    <!-- Matchups will be displayed here by results.js -->
+                    <p class="text-center">결과를 불러오는 중입니다...</p>
+                </div>
+
+                <h4 id="map-name-label" class="text-center mt-4"></h4>
+                <div class="text-center">
+                    <img id="map-image-display" class="img-fluid" style="max-height: 250px;" alt="선택된 맵 이미지">
+                </div>
+            </div>
+        </div>
+
+        <!-- 컨트롤 버튼 -->
+        <div class="text-center my-4">
+            <button class="btn btn-secondary btn-lg" id="back-to-main">뒤로가기</button>
+        </div>
+    </div>
+
+    <script src="results.js"></script>
+</body>
+</html>
