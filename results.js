@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const mapNameLabel = document.getElementById('map-name-label');
     const mapImageDisplay = document.getElementById('map-image-display');
     const backToMainBtn = document.getElementById('back-to-main');
+    const helpIcon = document.getElementById('help-icon');
+    const tierTooltip = document.getElementById('tier-tooltip');
 
     const TIER_COLORS = {
         "아이언": "badge-iron",
@@ -14,6 +16,34 @@ document.addEventListener('DOMContentLoaded', () => {
         "초월자": "badge-ascendant",
         "불멸": "badge-immortal",
         "레디언트": "badge-radiant"
+    };
+
+    const TIER_SCORES = {
+        "아이언 1": 100,
+        "아이언 2": 110,
+        "아이언 3": 120,
+        "브론즈 1": 135,
+        "브론즈 2": 150,
+        "브론즈 3": 165,
+        "실버 1": 185,
+        "실버 2": 205,
+        "실버 3": 225,
+        "골드 1": 250,
+        "골드 2": 275,
+        "골드 3": 300,
+        "플래티넘 1": 330,
+        "플래티넘 2": 360,
+        "플래티넘 3": 390,
+        "다이아몬드 1": 430,
+        "다이아몬드 2": 470,
+        "다이아몬드 3": 510,
+        "초월자 1": 560,
+        "초월자 2": 610,
+        "초월자 3": 660,
+        "불멸 1": 720,
+        "불멸 2": 780,
+        "불멸 3": 840,
+        "레디언트": 1000
     };
 
     /**
@@ -36,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
             case '다이아몬드': abbrev = 'D'; break;
             case '초월자': abbrev = 'A'; break;
             case '불멸': abbrev = 'IM'; break;
-            case '레디언트': return 'R';
+            case '레디���트': return 'R';
             default: return '';
         }
         return abbrev + tierNum;
@@ -125,10 +155,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     } else {
-        matchupDisplay.innerHTML = '<p class="text-center">생성된 팀 결과가 없습니다. 메인 페이지로 돌아가 팀을 생성해주세요.</p>';
+        matchupDisplay.innerHTML = '<p class="text-center">생성된 팀 결과가 없습니다. 메인 페이지로 ���아가 팀을 생성해주세요.</p>';
         mapNameLabel.textContent = '';
         mapImageDisplay.style.display = 'none';
     }
+
+    // Populate and manage tier tooltip
+    let tooltipContent = '';
+    for (const tier in TIER_SCORES) {
+        tooltipContent += `<p>${tier} - ${TIER_SCORES[tier]}</p>`;
+    }
+    tierTooltip.innerHTML = tooltipContent;
+
+    helpIcon.addEventListener('mouseover', () => {
+        tierTooltip.style.display = 'block';
+    });
+
+    helpIcon.addEventListener('mouseout', () => {
+        tierTooltip.style.display = 'none';
+    });
 
     // 뒤로가기 버튼 이벤트 리스너
     backToMainBtn.addEventListener('click', () => {

@@ -423,7 +423,7 @@ h1 {
 }
 
 .position-logo {
-    width: 14px;
+    width: 14px;  /* 로고 크기 축소 */
     height: 14px;
 }
 
@@ -509,4 +509,46 @@ h1 {
     padding: 20px 0;
     margin-top: 40px;
     border-top: 1px solid #e9ecef;
+}
+
+/* Help Icon and Tooltip Styles */
+#help-icon-container {
+    position: relative;
+    width: 100%; /* Ensure it takes full width to position children */
+    height: 0; /* Don't take up vertical space */
+}
+
+#help-icon {
+    position: absolute;
+    top: -60px; /* Adjust as needed to position relative to h1 */
+    right: 0px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+#tier-tooltip {
+    position: absolute;
+    top: -60px; /* Align with the icon */
+    right: 50px; /* Position to the left of the icon */
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    display: none; /* Hidden by default */
+    width: 200px; /* Fixed width for the tooltip */
+    font-size: 0.9em;
+    line-height: 1.6;
+    color: #333;
+}
+
+#tier-tooltip p {
+    margin-bottom: 5px;
+}
+
+#tier-tooltip p:last-child {
+    margin-bottom: 0;
 }
