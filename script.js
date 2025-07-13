@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const helpIcon = document.getElementById('help-icon');
     const helpModal = document.getElementById('help-modal');
     const modalCloseBtn = document.getElementById('modal-close-btn');
+    const themeToggle = document.getElementById('theme-toggle');
 
     const maps = ["스플릿", "바인드", "헤이븐", "어센트", "아이스박스", "브리즈", "프랙처", "펄", "로터스", "선셋", "어비스", "코로드"];
     const playerInputFields = [];
@@ -337,20 +338,30 @@ document.addEventListener('DOMContentLoaded', () => {
         return balanceScore;
     }
 
-    // --- Help Modal Logic ---
-    helpIcon.addEventListener('click', () => {
-        helpModal.classList.add('show');
-    });
+    // --- Event Listeners ---
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark-mode');
+            const newTheme = document.documentElement.classList.contains('dark-mode') ? 'dark' : 'light';
+            localStorage.setItem('valorant-theme', newTheme);
+        });
+    }
 
-    modalCloseBtn.addEventListener('click', () => {
-        helpModal.classList.remove('show');
-    });
+    if (helpIcon && helpModal) {
+        helpIcon.addEventListener('click', () => {
+            helpModal.classList.add('show');
+        });
 
-    helpModal.addEventListener('click', (event) => {
-        if (event.target === helpModal) { // Click on overlay
+        modalCloseBtn.addEventListener('click', () => {
             helpModal.classList.remove('show');
-        }
-    });
+        });
+
+        helpModal.addEventListener('click', (event) => {
+            if (event.target === helpModal) {
+                helpModal.classList.remove('show');
+            }
+        });
+    }
 
     initializeUI();
 });

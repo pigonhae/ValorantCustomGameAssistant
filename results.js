@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tierInfoModal = document.getElementById('tier-info-modal');
     const modalCloseBtn = document.getElementById('modal-close-btn');
     const tierInfoBody = document.getElementById('tier-info-body');
+    const themeToggle = document.getElementById('theme-toggle');
 
     const TIER_COLORS = {
         "아이언": "badge-iron",
@@ -222,20 +223,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     tierInfoBody.appendChild(tierList);
 
-    // Event listeners for modal
-    helpIcon.addEventListener('click', () => {
-        tierInfoModal.classList.add('show');
-    });
+    // --- Event Listeners ---
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark-mode');
+            const newTheme = document.documentElement.classList.contains('dark-mode') ? 'dark' : 'light';
+            localStorage.setItem('valorant-theme', newTheme);
+        });
+    }
 
-    modalCloseBtn.addEventListener('click', () => {
-        tierInfoModal.classList.remove('show');
-    });
+    if (helpIcon && tierInfoModal) {
+        helpIcon.addEventListener('click', () => {
+            tierInfoModal.classList.add('show');
+        });
 
-    tierInfoModal.addEventListener('click', (event) => {
-        if (event.target === tierInfoModal) { // Click on overlay
+        modalCloseBtn.addEventListener('click', () => {
             tierInfoModal.classList.remove('show');
-        }
-    });
+        });
+
+        tierInfoModal.addEventListener('click', (event) => {
+            if (event.target === tierInfoModal) {
+                tierInfoModal.classList.remove('show');
+            }
+        });
+    }
 
     // 뒤로가기 버튼 이벤트 리스너
     backToMainBtn.addEventListener('click', () => {
