@@ -10,7 +10,12 @@
 </head>
 <body>
     <div class="container my-4">
-        <h1 class="text-center mb-4">발로란트 내전 도우미</h1>
+        <div class="position-relative">
+            <h1 class="text-center mb-4">발로란트 내전 도우미</h1>
+            <div id="help-icon-container">
+                <img id="help-icon" src="images/help-web-button.png" alt="도움말" title="사용 방법">
+            </div>
+        </div>
 
         <!-- 플레이어 입력 섹션 -->
         <div class="card mb-4">
@@ -41,6 +46,41 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>사용 방법</h2>
+                <button id="modal-close-btn" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <ul class="help-list">
+                    <li>
+                        <strong>1. 플레이어 정보 입력:</strong>
+                        <span>10명의 플레이어 이름, 티어, 선호 포지션을 각각 입력합니다. '자동 채우기' 버튼으로 빠르게 테스트 데이터를 채울 수 있습니다.</span>
+                    </li>
+                    <li>
+                        <strong>2. 맵 선택:</strong>
+                        <span>플레이하고 싶은 맵들을 클릭하여 선택합니다. 선택된 맵은 밝게 표시됩니다.</span>
+                    </li>
+                    <li>
+                        <strong>3. 팀 생성:</strong>
+                        <span>'팀 생성하기!' 버튼을 클릭하면, 입력된 정보를 바탕으로 가장 균형 잡힌 팀 조합들을 생성하여 결과 페이지에 보여줍니다.</span>
+                    </li>
+                    <li>
+                        <strong>4. 결과 확인:</strong>
+                        <span>결과 페이지에서 최대 3개의 최적 팀 조합과 랜덤으로 선택된 맵을 확인합니다. 각 조합의 '결과 복사하기' 버튼으로 결과를 간편하게 공유할 수 있습니다.</span>
+                    </li>
+                    <li>
+                        <strong>5. 정보 확인:</strong>
+                        <span>결과 페이지 우측 상단의 아이콘을 클릭하면 티어별 점수 정보를 확인할 수 있습니다.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <footer class="site-footer">
         <div class="text-center">
             <span style="margin-right: 10px; font-size: 0.8em; color: #6c757d;">&copy; Pi90nhae 2025</span>

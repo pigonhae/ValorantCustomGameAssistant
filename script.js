@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const mapSelectionDiv = document.getElementById('map-selection');
     const autoFillPlayersBtn = document.getElementById('auto-fill-players');
     const generateTeamsBtn = document.getElementById('generate-teams');
+    const helpIcon = document.getElementById('help-icon');
+    const helpModal = document.getElementById('help-modal');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
 
     const maps = ["스플릿", "바인드", "헤이븐", "어센트", "아이스박스", "브리즈", "프랙처", "펄", "로터스", "선셋", "어비스", "코로드"];
     const playerInputFields = [];
@@ -333,6 +336,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         return balanceScore;
     }
+
+    // --- Help Modal Logic ---
+    helpIcon.addEventListener('click', () => {
+        helpModal.classList.add('show');
+    });
+
+    modalCloseBtn.addEventListener('click', () => {
+        helpModal.classList.remove('show');
+    });
+
+    helpModal.addEventListener('click', (event) => {
+        if (event.target === helpModal) { // Click on overlay
+            helpModal.classList.remove('show');
+        }
+    });
 
     initializeUI();
 });
