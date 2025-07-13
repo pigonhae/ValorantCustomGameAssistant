@@ -4,8 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const mapImageDisplay = document.getElementById('map-image-display');
     const backToMainBtn = document.getElementById('back-to-main');
     const helpIcon = document.getElementById('help-icon');
-    const tierTooltip = document.getElementById('tier-tooltip');
     const copyToast = document.getElementById('copy-toast');
+    const tierInfoModal = document.getElementById('tier-info-modal');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+    const tierInfoBody = document.getElementById('tier-info-body');
 
     const TIER_COLORS = {
         "아이언": "badge-iron",
@@ -28,6 +30,18 @@ document.addEventListener('DOMContentLoaded', () => {
             copyToast.classList.remove('show');
         }, 2000); // 2초 후에 팝업 숨기기
     }
+
+    const TIER_HEX_COLORS = {
+        "아이언": "#36454F",
+        "브론즈": "#A52A2A",
+        "실버": "#D3D3D3",
+        "골드": "#FFD700",
+        "플래티넘": "#87CEEB",
+        "다이아몬드": "#DDA0DD",
+        "초월자": "#008000",
+        "불멸": "#FF0000",
+        "레디언트": "#FFC107"
+    };
 
     const TIER_SCORES = {
         "아이언 1": 100,
@@ -185,24 +199,42 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     } else {
-        matchupDisplay.innerHTML = '<p class="text-center">생성된 팀 결과가 없습니다. 메인 페이지로 ���아가 팀을 생성해주세요.</p>';
+        matchupDisplay.innerHTML = '<p class="text-center">생성된 팀 결과가 없습니다. 메인 페이지로 돌아가 팀을 생성해주세요.</p>';
         mapNameLabel.textContent = '';
         mapImageDisplay.style.display = 'none';
     }
 
-    // Populate and manage tier tooltip
-    let tooltipContent = '';
-    for (const tier in TIER_SCORES) {
-        tooltipContent += `<p>${tier} - ${TIER_SCORES[tier]}</p>`;
-    }
-    tierTooltip.innerHTML = tooltipContent;
+    // Populate tier info modal
+    const tierList = document.createElement('ul');
+    tierList.className = 'tier-info-list';
 
-    helpIcon.addEventListener('mouseover', () => {
-        tierTooltip.style.display = 'block';
+    for (const tier in TIER_SCORES) {
+        const tierName = tier.split(' ')[0];
+        const item = document.createElement('li');
+        item.className = 'tier-info-item';
+        
+        item.innerHTML = `
+            <div class="tier-color-swatch" style="background-color: ${TIER_HEX_COLORS[tierName] || '#ccc'};"></div>
+            <span class="tier-info-name">${tier}</span>
+            <span class="tier-info-score">${TIER_SCORES[tier]} 점</span>
+        `;
+        tierList.appendChild(item);
+    }
+    tierInfoBody.appendChild(tierList);
+
+    // Event listeners for modal
+    helpIcon.addEventListener('click', () => {
+        tierInfoModal.classList.add('show');
     });
 
-    helpIcon.addEventListener('mouseout', () => {
-        tierTooltip.style.display = 'none';
+    modalCloseBtn.addEventListener('click', () => {
+        tierInfoModal.classList.remove('show');
+    });
+
+    tierInfoModal.addEventListener('click', (event) => {
+        if (event.target === tierInfoModal) { // Click on overlay
+            tierInfoModal.classList.remove('show');
+        }
     });
 
     // 뒤로가기 버튼 이벤트 리스너

@@ -13,9 +13,6 @@
         <h1 class="text-center mb-4">팀 생성 결과</h1>
         <div id="help-icon-container">
             <img id="help-icon" src="images/help-web-button.png" alt="도움말" title="티어별 점수 정보">
-            <div id="tier-tooltip" class="card p-2">
-                <!-- Tier scores will be populated here by results.js -->
-            </div>
         </div>
 
         <!-- 결과 표시 섹션 -->
@@ -42,5 +39,18 @@
 
     <script src="results.js"></script>
     <div id="copy-toast" class="toast-popup">클립보드에 복사가 되었습니다.</div>
+
+    <!-- Tier Info Modal -->
+    <div id="tier-info-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>티어별 점수 정보</h2>
+                <button id="modal-close-btn" class="close-btn">&times;</button>
+            </div>
+            <div id="tier-info-body" class="modal-body">
+                <!-- Tier scores will be populated here by JS -->
+            </div>
+        </div>
+    </div>
 </body>
 </html>
