@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToMainBtn = document.getElementById('back-to-main');
     const helpIcon = document.getElementById('help-icon');
     const tierTooltip = document.getElementById('tier-tooltip');
+    const copyToast = document.getElementById('copy-toast');
 
     const TIER_COLORS = {
         "아이언": "badge-iron",
@@ -17,6 +18,16 @@ document.addEventListener('DOMContentLoaded', () => {
         "불멸": "badge-immortal",
         "레디언트": "badge-radiant"
     };
+
+    /**
+     * 클립보드 복사 성공 팝업을 표시합니다.
+     */
+    function showCopyToast() {
+        copyToast.classList.add('show');
+        setTimeout(() => {
+            copyToast.classList.remove('show');
+        }, 2000); // 2초 후에 팝업 숨기기
+    }
 
     const TIER_SCORES = {
         "아이언 1": 100,
@@ -150,8 +161,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 <p class="text-center mt-3 mb-0">점수 차이: ${Math.abs(scoreA - scoreB)}</p>
+                <div class="text-center mt-3">
+                    <button class="btn btn-outline-secondary btn-sm copy-combination-btn">결과 복사하기</button>
+                </div>
             `;
             matchupDisplay.appendChild(combinationDiv);
+
+            // 복사 버튼에 이벤트 리스너 추가
+            const copyBtn = combinationDiv.querySelector('.copy-combination-btn');
+            copyBtn.addEventListener('click', () => {
+                const teamANames = teamA.map(p => p.name).join(', ');
+                const teamBNames = teamB.map(p => p.name).join(', ');
+                
+                const copyText = `공격팀 : ${teamANames}\n수비팀 : ${teamBNames}\n\n이번 매치 맵 : ${selectedMap}`;
+
+                navigator.clipboard.writeText(copyText).then(() => {
+                    showCopyToast();
+                }).catch(err => {
+                    console.error('클립보드 복사 실패:', err);
+                    alert('복사에 실패했습니다. 다시 시도해주세요.');
+                });
+            });
         });
 
     } else {
