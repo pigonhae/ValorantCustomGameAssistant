@@ -131,9 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h4 class="text-center mb-3">조합 ${index + 1}</h4>
                 <div class="row">
                     <div class="col-md-6">
-                        <h5 class="text-center text-primary">공격팀 (${scoreA})</h5>
+                        <h5 class="text-center text-primary">수비팀 (${scoreB})</h5>
                         <ul class="list-group">
-                            ${teamA.map(p => {
+                            ${teamB.map(p => {
                                 const baseTier = p.tier.split(' ')[0];
                                 const tierColorClass = TIER_COLORS[baseTier] || 'badge-secondary';
                                 const abbreviatedTier = getTierAbbreviation(p.tier);
@@ -153,9 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         </ul>
                     </div>
                     <div class="col-md-6">
-                        <h5 class="text-center text-danger">수비팀 (${scoreB})</h5>
+                        <h5 class="text-center text-danger">공격팀 (${scoreA})</h5>
                         <ul class="list-group">
-                            ${teamB.map(p => {
+                            ${teamA.map(p => {
                                 const baseTier = p.tier.split(' ')[0];
                                 const tierColorClass = TIER_COLORS[baseTier] || 'badge-secondary';
                                 const abbreviatedTier = getTierAbbreviation(p.tier);
@@ -188,7 +188,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const teamANames = teamA.map(p => p.name).join(', ');
                 const teamBNames = teamB.map(p => p.name).join(', ');
                 
-                const copyText = `공격팀 : ${teamANames}\n수비팀 : ${teamBNames}\n\n이번 매치 맵 : ${selectedMap}`;
+                const copyText = `수비팀 : ${teamBNames}
+공격팀 : ${teamANames}
+
+이번 매치 맵 : ${selectedMap}`;
 
                 navigator.clipboard.writeText(copyText).then(() => {
                     showCopyToast();
