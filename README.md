@@ -50,6 +50,5 @@ ValorantCustomGameAssistant/
 ├───README.md           # 프로젝트 설명서
 └───images/
     ├───class/          # 포지션 로고 이미지
-    ├───map/            # 맵 이미지
-    └───discord.png
+    └───map/            # 맵 이미지
 ```
