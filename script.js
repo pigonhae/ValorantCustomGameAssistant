@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return bestCombo;
         }
 
-        const numCombinationsToGenerate = 6; // 생성할 조합의 수
+        const numCombinationsToGenerate = 3; // 생성할 조합의 수
         const finalBestCombinations = [];
         const seenCombinations = new Set();
         for (let i = 0; i < numCombinationsToGenerate; i++) {
